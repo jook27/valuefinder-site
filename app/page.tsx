@@ -6,6 +6,17 @@ type Lang = "ko" | "en" | "zh" | "ja" | "es" | "ar" | "hi" | "ru" | "pt" | "fr" 
 
 const siteNames = ["Investing.com", "NAVER Finance", "Yahoo Finance", "Finviz", "StockAnalysis", "Seeking Alpha"];
 const languageLabels: Record<Lang, string> = { ko: "한국어", en: "English", zh: "中文", ja: "日本語", es: "Español", ar: "العربية", hi: "हिन्दी", ru: "Русский", pt: "Português", fr: "Français", vi: "Tiếng Việt", de: "Deutsch" };
+const installShots = [
+  ["/setup/vf_chrome-extensions-visitChromeWebStore.jpg", "/setup/vf_search-fill-valuefinder.jpg"],
+  ["/setup/vf_add-to-extensions.jpg"],
+  ["/setup/vf_after-installing-fix-on-your-toolbar.jpg"],
+];
+const guideShots = [
+  ["/howtouse/vf_not-supported-website.jpg", "/howtouse/vf_not-supported-page-search-and-open-an-individual-stock-page.jpg"],
+  ["/howtouse/vf_show-location-in-current-page.jpg"],
+  ["/howtouse/vf_not-available-here-leading-to-othere-site.jpg"],
+  ["/howtouse/vf_go-and-highlight-in-other-page.jpg"],
+];
 
 const content = {
   ko: {
@@ -59,8 +70,8 @@ export default function Home() {
       <section className="principle" id="how"><p className="section-number">01 / WAYFINDING</p><h2>{t.principleTitle[0]}<br/>{t.principleTitle[1]}</h2><p>{t.principleBody}</p></section>
       <section className="route-flow" aria-label={t.nav[0]}>{t.routes.map((route,i)=><article key={route[0]}><span>0{i+1}</span><img className="feature-shot" src={["/feature-current.png","/feature-route.png","/feature-alternative.png"][i]} alt="ValueFinder"/><h3>{route[0]}</h3><p>{route[1]}</p></article>)}</section>
       <section className="proof"><div><strong>26</strong><span>{t.stats[0]}</span></div><div><strong>6</strong><span>{t.stats[1]}</span></div><div><strong>2</strong><span>{t.stats[2]}</span></div><p>{t.proof}</p></section>
-      <section className="install" id="install"><div className="install-intro"><p className="section-number">02 / GET STARTED</p><h2>{t.installTitle[0]}<br/>{t.installTitle[1]}</h2><p>{t.installBody}</p><a className="store-badge" href={storeUrl} target="_blank" rel="noreferrer"><span className="chrome-mark" aria-hidden="true"/><span><small>{t.storeSmall}</small><strong>{t.storeStrong}</strong></span></a></div><ol className="install-steps">{t.installSteps.map((step,i)=><li key={step[0]}><b>0{i+1}</b><div><h3>{step[0]}</h3><p>{step[1]}</p></div></li>)}</ol></section>
-      <section className="quick-guide" id="demo"><div className="guide-heading"><p className="section-number">03 / 60-SECOND GUIDE</p><h2>{t.guideTitle[0]}<br/>{t.guideTitle[1]}</h2></div><div className="guide-timeline">{t.guide.map((step,i)=><article key={step[0]}><div className="time">00:{String(i*15).padStart(2,"0")}</div><div><h3>{step[0]}</h3><p>{step[1]}</p></div></article>)}</div></section>
+      <section className="install" id="install"><div className="install-intro"><p className="section-number">02 / INSTALLATION</p><h2>{t.installTitle[0]}<br/>{t.installTitle[1]}</h2><p>{t.installBody}</p><a className="store-link" href={storeUrl} target="_blank" rel="noreferrer"><span><small>{t.storeSmall}</small><strong>{t.storeStrong}</strong></span><b aria-hidden="true">↗</b></a><p className="brand-note">Chrome Web Store 공식 페이지로 이동합니다.</p></div><ol className="install-steps visual-steps">{t.installSteps.map((step,i)=><li key={step[0]}><b>0{i+1}</b><div><h3>{step[0]}</h3><p>{step[1]}</p><div className={`shot-row shot-row-${installShots[i].length}`}>{installShots[i].map((src,j)=><figure key={src}><img src={src} alt={`${step[0]} ${j+1}`} loading="lazy"/></figure>)}</div></div></li>)}</ol></section>
+      <section className="quick-guide" id="demo"><div className="guide-heading"><p className="section-number">03 / USAGE GUIDE</p><h2>{t.guideTitle[0]}<br/>{t.guideTitle[1]}</h2><p className="guide-lead">ValueFinder가 상황을 판단하고 안내하는 실제 화면을 순서대로 확인하세요.</p></div><div className="guide-timeline visual-guide">{t.guide.map((step,i)=><article key={step[0]}><div className="time">00:{String(i*15).padStart(2,"0")}</div><div><h3>{step[0]}</h3><p>{step[1]}</p><div className={`shot-row shot-row-${guideShots[i].length}`}>{guideShots[i].map((src,j)=><figure key={src}><img src={src} alt={`${step[0]} ${j+1}`} loading="lazy"/></figure>)}</div></div></article>)}</div></section>
       <section className="privacy-note"><div><p className="section-number">PRIVACY BY DEFAULT</p><h2>{t.privacyTitle[0]}<br/>{t.privacyTitle[1]}</h2></div><p>{t.privacy}</p></section>
       <footer><a className="brand footer-brand" href="#top"><img src="/valuefinder-logo.png" alt=""/><span>ValueFinder</span></a><p>{t.footer}</p><div><a href="mailto:kjyslt@gmail.com">{t.contact}</a><a href="https://jook27.github.io/valuefinder-site/privacy-policy.html">{t.policy}</a></div><small>{t.disclaimer}</small></footer>
     </main>
