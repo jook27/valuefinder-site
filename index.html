@@ -1,97 +1,17 @@
 <!doctype html>
 <html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ValueFinder — 금융 사이트 길안내</title>
-<meta name="description" content="금융 사이트에서 원하는 재무 정보가 어느 메뉴에 있는지 안내하는 크롬 확장 프로그램.">
-<link rel="canonical" href="https://jook27.github.io/valuefinder-site/">
-<style>
-  :root {
-    --fg: #1a1d23; --muted: #5b6472; --line: #e5e7eb;
-    --bg: #ffffff; --accent: #d97706; --card: #f6f7f9;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --fg: #e8eaed; --muted: #9aa1ac; --line: #2c3038;
-      --bg: #16181d; --accent: #f5a524; --card: #22262d;
-    }
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0 auto; padding: 64px 20px 96px; max-width: 720px;
-    background: var(--bg); color: var(--fg);
-    font: 16px/1.75 "Apple SD Gothic Neo", "Pretendard", -apple-system,
-          BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
-    -webkit-text-size-adjust: 100%;
-  }
-  h1 { font-size: 34px; margin: 0 0 10px; letter-spacing: -0.8px; }
-  h1 span { color: var(--accent); }
-  .tagline { font-size: 18px; color: var(--muted); margin: 0 0 36px; }
-  h2 {
-    font-size: 18px; margin: 44px 0 12px; padding-top: 24px;
-    border-top: 1px solid var(--line); letter-spacing: -0.3px;
-  }
-  ul { padding-left: 20px; }
-  li { margin: 8px 0; }
-  a { color: var(--accent); }
-  .sites {
-    display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 16px 0 0; list-style: none;
-  }
-  .sites li {
-    margin: 0; padding: 5px 12px; border: 1px solid var(--line);
-    border-radius: 999px; font-size: 14px; color: var(--muted);
-  }
-  footer {
-    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
-    color: var(--muted); font-size: 14px;
-  }
-</style>
-</head>
-<body>
-
-<h1>Value<span>Finder</span></h1>
-<p class="tagline">
-  금융 사이트에서 원하는 재무 정보가 <strong>어느 메뉴에 있는지</strong> 안내합니다.
-</p>
-
-<p>
-  investing.com에서 공매도를 5분 동안 찾아 헤매는 대신, 즉시 "여기엔 없고 Yahoo
-  Finance의 Statistics에 있습니다"라고 알려주는 것이 목표입니다.
-</p>
-
-<h2>지원 사이트</h2>
-<ul class="sites">
-  <li>Investing.com</li>
-  <li>네이버페이 증권</li>
-  <li>Yahoo Finance</li>
-  <li>Finviz</li>
-  <li>StockAnalysis</li>
-  <li>Seeking Alpha</li>
-</ul>
-
-<h2>동작 방식</h2>
-<ul>
-  <li>찾는 항목이 <strong>지금 화면에 보이면</strong> 스크롤해서 형광펜으로 짚어줍니다.</li>
-  <li><strong>다른 탭·다른 페이지에 있으면</strong> 무슨 일이 일어날지 버튼에 밝히고 이동합니다.</li>
-  <li>그 사이트에 <strong>아예 없으면</strong> "없습니다"라고 말하고 대체 사이트를 제안합니다.</li>
-</ul>
-
-<h2>개인정보</h2>
-<p>
-  개인정보를 수집·저장·판매하지 않으며, 서버를 운영하지 않습니다.
-  자세한 내용은 <a href="privacy-policy.html">개인정보처리방침</a>을 확인해 주세요.
-</p>
-
-<h2>문의</h2>
-<p>
-  <a href="mailto:kjyslt@gmail.com">kjyslt@gmail.com</a>
-</p>
-
-<footer>
-  ValueFinder는 Investing.com, Yahoo Finance, 네이버페이 증권, Finviz, StockAnalysis,
-  Seeking Alpha와 제휴 관계가 없는 독립적인 도구입니다.
-</footer>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="ValueFinder — 금융 사이트에서 원하는 재무 정보까지 안내하는 Chrome 확장 프로그램" />
+    <meta property="og:title" content="ValueFinder — 금융 사이트 길안내" />
+    <meta property="og:description" content="찾는 재무정보까지, 헤매지 말고 바로." />
+    <meta property="og:image" content="https://jook27.github.io/valuefinder-site/og.png" />
+    <link rel="canonical" href="https://jook27.github.io/valuefinder-site/" />
+    <title>ValueFinder — 금융 사이트 길안내</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/github-main.tsx"></script>
+  </body>
 </html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ValueFinder 개인정보처리방침</title>
+<meta name="description" content="ValueFinder 크롬 확장 프로그램의 개인정보처리방침. 개인정보를 수집·저장·판매하지 않습니다.">
+<link rel="canonical" href="https://jook27.github.io/valuefinder-site/privacy-policy.html">
+<style>
+  :root {
+    --fg: #1a1d23; --muted: #5b6472; --line: #e5e7eb;
+    --bg: #ffffff; --accent: #d97706; --code-bg: #f6f7f9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fg: #e8eaed; --muted: #9aa1ac; --line: #2c3038;
+      --bg: #16181d; --accent: #f5a524; --code-bg: #22262d;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0 auto; padding: 48px 20px 96px; max-width: 760px;
+    background: var(--bg); color: var(--fg);
+    font: 16px/1.75 "Apple SD Gothic Neo", "Pretendard", -apple-system,
+          BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 30px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.5px; }
+  h2 {
+    font-size: 19px; margin: 40px 0 12px; padding-top: 24px;
+    border-top: 1px solid var(--line); letter-spacing: -0.3px;
+  }
+  .updated { color: var(--muted); font-size: 14px; margin: 0 0 8px; }
+  .lede {
+    margin: 20px 0 0; padding: 16px 18px; border-radius: 10px;
+    background: var(--code-bg); color: var(--fg);
+  }
+  ul { padding-left: 20px; }
+  li { margin: 10px 0; }
+  code {
+    background: var(--code-bg); padding: 2px 6px; border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px;
+    word-break: break-all;
+  }
+  a { color: var(--accent); }
+  footer {
+    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<h1>ValueFinder 개인정보처리방침</h1>
+<p class="updated">최종 수정일: 2026년 8월 15일</p>
+
+<p class="lede">
+  ValueFinder는 사용자를 식별하거나 추적하지 않습니다. 개인정보를 수집·저장·판매하지
+  않으며, 서버를 운영하지 않습니다(백엔드가 없습니다). 모든 판단은 사용자의 브라우저
+  안에서만 이루어집니다.
+</p>
+
+<h2>수집하는 정보</h2>
+<p>
+  없습니다. 이름, 이메일, 계정, 위치, 결제 정보 등 사용자를 식별할 수 있는 어떤
+  정보도 수집하지 않습니다.
+</p>
+
+<h2>브라우저가 읽는 정보와 그 이유</h2>
+<ul>
+  <li>
+    <strong>현재 탭의 URL과 페이지 내용(DOM)</strong>: ValueFinder의 콘텐츠 스크립트는
+    지원되는 6개 금융 사이트 페이지가 열리면 동작할 준비 상태로 자동 로드될 수 있습니다.
+    다만 페이지 정보를 실제로 읽어 처리하는 것은 사용자가 ValueFinder에서 검색을
+    실행하거나(원하는 지표를 찾을 때), 그 검색으로 예약된 하이라이트 작업을 이어받아
+    수행할 때뿐입니다. 어느 금융 사이트의 어느 페이지를 보고 있는지 판단해서, 원하는
+    재무 지표가 현재 화면에 있는지, 다른 탭에 있는지, 다른 페이지로 이동해야 하는지를
+    계산하는 데만 사용됩니다. 이 정보는 기기 밖으로 전송되지 않습니다.
+  </li>
+</ul>
+
+<h2>기기에 저장하는 정보 (chrome.storage)</h2>
+<ul>
+  <li>
+    <strong>슬러그 캐시</strong> (<code>chrome.storage.local</code>): investing.com 종목
+    슬러그 조회 결과를 로컬에 캐시해 같은 종목을 반복 조회할 때 불필요한 네트워크 요청을
+    줄입니다. 회사명·티커·슬러그 같은 공개 정보만 담고, 개인정보는 포함하지 않습니다.
+  </li>
+  <li>
+    <strong>대기 중인 하이라이트 작업</strong> (<code>chrome.storage.session</code>):
+    "이동 후 하이라이트" 동작을 위해 어떤 지표를 찾아야 하는지 임시로 저장합니다.
+    20초 후 자동 만료되며, 브라우저 세션이 끝나면 사라집니다.
+  </li>
+</ul>
+<p>
+  두 저장소 모두 사용자의 기기 안에만 있으며, 개발자를 포함해 외부 서버로 전송되지
+  않습니다.
+</p>
+
+<h2>제3자 서비스로 전송하는 정보</h2>
+<ul>
+  <li>
+    <strong>investing.com 검색 API</strong>
+    (<code>https://www.investing.com/search/service/searchTopBar</code>): 종목
+    식별자(티커 또는 6자리 코드)를 investing.com 슬러그로 변환할 때, 사용자가 조회하려는
+    종목명 또는 티커를 검색어로 이 API에 전송합니다. 이는 사용자가 investing.com
+    검색창에 직접 입력하는 것과 동일한 동작이며, ValueFinder가 이 요청 내용을 별도로
+    수집·저장·분석하지 않습니다.
+  </li>
+  <li>
+    위 검색 API 호출을 제외하면, 지원 사이트(Investing.com·네이버페이 증권·Yahoo
+    Finance·Finviz·StockAnalysis·Seeking Alpha)의 페이지 탐색 과정에서 ValueFinder가
+    외부로 전송하는 정보는 없습니다. 해당 페이지들은 사용자가 브라우저로 직접 열람하는
+    것이며, ValueFinder는 그 페이지 안에서 스크롤·탭 클릭·하이라이트만 수행합니다.
+  </li>
+</ul>
+
+<h2>분석, 광고, 트래킹</h2>
+<p>
+  사용하지 않습니다. 애널리틱스 SDK, 광고 네트워크, 사용자 행동 추적 스크립트가
+  포함되어 있지 않습니다.
+</p>
+
+<h2>데이터 판매</h2>
+<p>
+  해당 사항 없습니다. 수집하는 개인 데이터가 없으므로 판매할 데이터도 없습니다.
+</p>
+
+<h2>상표 고지</h2>
+<p>
+  ValueFinder는 Investing.com, Yahoo Finance, 네이버페이 증권, Finviz, StockAnalysis,
+  Seeking Alpha와 제휴·제공·후원 관계가 없는 독립적인 도구입니다. 각 사이트명은 해당
+  소유자의 상표이며, 사용자가 그 사이트를 어디서 찾아야 하는지 안내하는 목적으로만
+  언급합니다.
+</p>
+
+<h2>문의</h2>
+<p>
+  이 확장 프로그램에 대한 문의는
+  <a href="mailto:kjyslt@gmail.com">kjyslt@gmail.com</a>으로 보내주시기 바랍니다.
+</p>
+
+<footer>
+  ValueFinder — 금융 사이트에서 원하는 재무 정보가 어느 메뉴에 있는지 안내하는
+  브라우저 확장 프로그램
+</footer>
+
+</body>
+</html>

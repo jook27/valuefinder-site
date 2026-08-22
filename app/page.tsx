@@ -7,20 +7,20 @@ type Lang = "ko" | "en" | "zh" | "ja" | "es" | "ar" | "hi" | "ru" | "pt" | "fr" 
 const siteNames = ["Investing.com", "NAVER Finance", "Yahoo Finance", "Finviz", "StockAnalysis", "Seeking Alpha"];
 const languageLabels: Record<Lang, string> = { ko: "한국어", en: "English", zh: "中文", ja: "日本語", es: "Español", ar: "العربية", hi: "हिन्दी", ru: "Русский", pt: "Português", fr: "Français", vi: "Tiếng Việt", de: "Deutsch" };
 const installShots = [
-  ["/setup/vf_chrome-extensions-visitChromeWebStore.jpg", "/setup/vf_search-fill-valuefinder.jpg"],
-  ["/setup/vf_add-to-extensions.jpg"],
-  ["/setup/vf_after-installing-fix-on-your-toolbar.jpg"],
+  ["./setup/vf_chrome-extensions-visitChromeWebStore.jpg", "./setup/vf_search-fill-valuefinder.jpg"],
+  ["./setup/vf_add-to-extensions.jpg"],
+  ["./setup/vf_after-installing-fix-on-your-toolbar.jpg"],
 ];
 const guideShots = [
-  ["/howtouse/vf_not-supported-website.jpg", "/howtouse/vf_not-supported-page-search-and-open-an-individual-stock-page.jpg"],
-  ["/howtouse/vf_show-location-in-current-page.jpg"],
-  ["/howtouse/vf_not-available-here-leading-to-othere-site.jpg"],
-  ["/howtouse/vf_go-and-highlight-in-other-page.jpg"],
+  ["./howtouse/vf_not-supported-website.jpg", "./howtouse/vf_not-supported-page-search-and-open-an-individual-stock-page.jpg"],
+  ["./howtouse/vf_show-location-in-current-page.jpg"],
+  ["./howtouse/vf_not-available-here-leading-to-othere-site.jpg"],
+  ["./howtouse/vf_go-and-highlight-in-other-page.jpg"],
 ];
 const wayfindingShots = [
-  "/wayfinding/vf_highlight-here.jpg",
-  "/wayfinding/vf_go-to-the-page-and-highlight.jpg",
-  "/wayfinding/vf_leading-to-other-website.jpg",
+  "./wayfinding/vf_highlight-here.jpg",
+  "./wayfinding/vf_go-to-the-page-and-highlight.jpg",
+  "./wayfinding/vf_leading-to-other-website.jpg",
 ];
 
 const content = {
@@ -69,8 +69,8 @@ export default function Home() {
   const storeUrl = `https://chromewebstore.google.com/search/ValueFinder?hl=${t.locale}`;
   return (
     <main dir={rtl ? "rtl" : "ltr"} lang={t.locale}>
-      <header className="site-header"><a className="brand" href="#top" aria-label="ValueFinder"><img src="/valuefinder-logo.png" alt="" /><span>ValueFinder</span></a><div className="header-actions"><nav aria-label="Primary"><a href="#how">{t.nav[0]}</a><a href="#install">{t.nav[1]}</a><a className="nav-cta" href="#install">{t.nav[2]}</a></nav><label className="language-picker"><span className="sr-only">Language</span><select value={lang} onChange={(e)=>setLang(e.target.value as Lang)} aria-label="Language">{(Object.keys(languageLabels) as Lang[]).map(code=><option value={code} key={code}>{languageLabels[code]}</option>)}</select></label></div></header>
-      <section className="hero" id="top"><div className="hero-copy"><p className="eyebrow"><span /> {t.eyebrow}</p><h1>{t.headline[0]}<br />{t.headline[1]}<em>{t.headline[2]}</em></h1><p className="hero-description">{t.description}</p><div className="hero-actions"><a className="button button-primary" href="#install">{t.actions[0]} <span aria-hidden="true">→</span></a><a className="text-link" href="#demo">{t.actions[1]}</a></div><p className="microcopy">{t.micro}</p></div><div className="product-stage" aria-label="ValueFinder preview"><div className="browser-bar"><span/><span/><span/><p>finance.yahoo.com / AAPL</p></div><div className="finance-page" aria-hidden="true"><p className="tiny-label">APPLE INC.</p><div className="ticker-line"><b>AAPL</b><strong>226.34</strong><i>+1.28%</i></div><div className="chart-line"/></div><div className="finder-panel"><div className="panel-brand"><img src="/valuefinder-logo.png" alt=""/><b>ValueFinder</b></div><div className="demo-label">{t.searchQ}</div><div className="search-box"><span>{t.query}</span><kbd>↵</kbd></div><p className="result-kicker">{t.found}</p><h2>Statistics → Share Statistics</h2><p className="result-copy">{t.result}</p><div className="mock-button">{t.show}<span>→</span></div></div></div></section>
+      <header className="site-header"><a className="brand" href="#top" aria-label="ValueFinder"><img src="./valuefinder-logo.png" alt="" /><span>ValueFinder</span></a><div className="header-actions"><nav aria-label="Primary"><a href="#how">{t.nav[0]}</a><a href="#install">{t.nav[1]}</a><a className="nav-cta" href="#install">{t.nav[2]}</a></nav><label className="language-picker"><span className="sr-only">Language</span><select value={lang} onChange={(e)=>setLang(e.target.value as Lang)} aria-label="Language">{(Object.keys(languageLabels) as Lang[]).map(code=><option value={code} key={code}>{languageLabels[code]}</option>)}</select></label></div></header>
+      <section className="hero" id="top"><div className="hero-copy"><p className="eyebrow"><span /> {t.eyebrow}</p><h1>{t.headline[0]}<br />{t.headline[1]}<em>{t.headline[2]}</em></h1><p className="hero-description">{t.description}</p><div className="hero-actions"><a className="button button-primary" href="#install">{t.actions[0]} <span aria-hidden="true">→</span></a><a className="text-link" href="#demo">{t.actions[1]}</a></div><p className="microcopy">{t.micro}</p></div><div className="product-stage" aria-label="ValueFinder preview"><div className="browser-bar"><span/><span/><span/><p>finance.yahoo.com / AAPL</p></div><div className="finance-page" aria-hidden="true"><p className="tiny-label">APPLE INC.</p><div className="ticker-line"><b>AAPL</b><strong>226.34</strong><i>+1.28%</i></div><div className="chart-line"/></div><div className="finder-panel"><div className="panel-brand"><img src="./valuefinder-logo.png" alt=""/><b>ValueFinder</b></div><div className="demo-label">{t.searchQ}</div><div className="search-box"><span>{t.query}</span><kbd>↵</kbd></div><p className="result-kicker">{t.found}</p><h2>Statistics → Share Statistics</h2><p className="result-copy">{t.result}</p><div className="mock-button">{t.show}<span>→</span></div></div></div></section>
       <section className="site-strip" aria-label={t.support}><p>{t.support}</p><ul>{siteNames.map(site=><li key={site}>{site}</li>)}</ul></section>
       <section className="principle" id="how"><p className="section-number">01 / WAYFINDING</p><h2>{t.principleTitle[0]}<br/>{t.principleTitle[1]}</h2><p>{t.principleBody}</p></section>
       <section className="route-flow" aria-label={t.nav[0]}>{t.routes.map((route,i)=><article key={route[0]}><span>0{i+1}</span><img className={`feature-shot${i === 2 ? " feature-shot-full" : ""}`} src={wayfindingShots[i]} alt={`${route[0]} — ValueFinder`} loading="lazy"/><h3>{route[0]}</h3><p>{route[1]}</p></article>)}</section>
@@ -78,7 +78,7 @@ export default function Home() {
       <section className="install" id="install"><div className="install-intro"><p className="section-number">02 / INSTALLATION</p><h2>{t.installTitle[0]}<br/>{t.installTitle[1]}</h2><p>{t.installBody}</p><a className="store-link" href={storeUrl} target="_blank" rel="noreferrer"><span><small>{t.storeSmall}</small><strong>{t.storeStrong}</strong></span><b aria-hidden="true">↗</b></a><p className="brand-note">Chrome Web Store 공식 페이지로 이동합니다.</p></div><ol className="install-steps visual-steps">{t.installSteps.map((step,i)=><li key={step[0]}><b>0{i+1}</b><div><h3>{step[0]}</h3><p>{step[1]}</p><div className={`shot-row shot-row-${installShots[i].length}`}>{installShots[i].map((src,j)=><figure key={src}><img src={src} alt={`${step[0]} ${j+1}`} loading="lazy"/></figure>)}</div></div></li>)}</ol></section>
       <section className="quick-guide" id="demo"><div className="guide-heading"><p className="section-number">03 / USAGE GUIDE</p><h2>{t.guideTitle[0]}<br/>{t.guideTitle[1]}</h2><p className="guide-lead">ValueFinder가 상황을 판단하고 안내하는 실제 화면을 순서대로 확인하세요.</p></div><div className="guide-timeline visual-guide">{t.guide.map((step,i)=><article key={step[0]}><div className="time">00:{String(i*15).padStart(2,"0")}</div><div><h3>{step[0]}</h3><p>{step[1]}</p><div className={`shot-row shot-row-${guideShots[i].length}`}>{guideShots[i].map((src,j)=><figure key={src}><img src={src} alt={`${step[0]} ${j+1}`} loading="lazy"/></figure>)}</div></div></article>)}</div></section>
       <section className="privacy-note"><div><p className="section-number">PRIVACY BY DEFAULT</p><h2>{t.privacyTitle[0]}<br/>{t.privacyTitle[1]}</h2></div><p>{t.privacy}</p></section>
-      <footer><a className="brand footer-brand" href="#top"><img src="/valuefinder-logo.png" alt=""/><span>ValueFinder</span></a><p>{t.footer}</p><div><a href="mailto:kjyslt@gmail.com">{t.contact}</a><a href="https://jook27.github.io/valuefinder-site/privacy-policy.html">{t.policy}</a></div><small>{t.disclaimer}</small></footer>
+      <footer><a className="brand footer-brand" href="#top"><img src="./valuefinder-logo.png" alt=""/><span>ValueFinder</span></a><p>{t.footer}</p><div><a href="mailto:kjyslt@gmail.com">{t.contact}</a><a href="./privacy-policy.html">{t.policy}</a></div><small>{t.disclaimer}</small></footer>
     </main>
   );
 }
