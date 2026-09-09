@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import screenshots from "./screenshots.json";
 
 type Lang = "ko" | "en" | "zh" | "ja" | "es" | "ar" | "hi" | "ru" | "pt" | "fr" | "vi" | "de";
 
@@ -62,23 +63,97 @@ const content = {
   }
 } as const;
 
+const utilityCopy: Record<Lang, { zoom: string; close: string; screen: string; skip: string }> = {
+  ko: { zoom: "화면 크게 보기", close: "닫기", screen: "실제 사용 화면", skip: "본문으로 건너뛰기" },
+  en: { zoom: "Enlarge screenshot", close: "Close", screen: "Actual product screen", skip: "Skip to content" },
+  zh: { zoom: "放大截图", close: "关闭", screen: "实际使用画面", skip: "跳转到正文" },
+  ja: { zoom: "画面を拡大", close: "閉じる", screen: "実際の使用画面", skip: "本文へ移動" },
+  es: { zoom: "Ampliar captura", close: "Cerrar", screen: "Pantalla real", skip: "Ir al contenido" },
+  ar: { zoom: "تكبير الصورة", close: "إغلاق", screen: "شاشة الاستخدام الفعلية", skip: "انتقل إلى المحتوى" },
+  hi: { zoom: "स्क्रीनशॉट बड़ा करें", close: "बंद करें", screen: "वास्तविक उत्पाद स्क्रीन", skip: "मुख्य सामग्री पर जाएँ" },
+  ru: { zoom: "Увеличить снимок", close: "Закрыть", screen: "Реальный экран", skip: "К содержимому" },
+  pt: { zoom: "Ampliar captura", close: "Fechar", screen: "Tela real do produto", skip: "Ir para o conteúdo" },
+  fr: { zoom: "Agrandir la capture", close: "Fermer", screen: "Écran réel du produit", skip: "Aller au contenu" },
+  vi: { zoom: "Phóng to ảnh", close: "Đóng", screen: "Màn hình sử dụng thực tế", skip: "Đến nội dung" },
+  de: { zoom: "Screenshot vergrößern", close: "Schließen", screen: "Echte Produktansicht", skip: "Zum Inhalt" },
+};
+
+type Shot = { src: string; alt: string };
+function Arrow({ diagonal = false }: { diagonal?: boolean }) {
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{diagonal ? <path d="M6 18 18 6M6 6h12v12"/> : <path d="M4 12h16m-6-6 6 6-6 6"/>}</svg>;
+}
+function ZoomIcon() {
+  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5M7 10h6m-3-3v6"/></svg>;
+}
+
 export default function Home() {
   const [lang, setLang] = useState<Lang>("ko");
+  const [expandedShot, setExpandedShot] = useState<Shot | null>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
   const t = content[lang];
-  const rtl = lang === "ar";
-  const storeUrl = `https://chromewebstore.google.com/search/ValueFinder?hl=${t.locale}`;
+  const u = utilityCopy[lang];
+  const ko = lang === "ko";
+  const storeUrl = `https://chromewebstore.google.com/detail/phinpnjelfnbdedgnnmbmpgnfnlknkhk?hl=${t.locale}`;
+  useEffect(() => {
+    document.documentElement.lang = t.locale;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  }, [lang, t.locale]);
+  useEffect(() => {
+    if (expandedShot) {
+      dialog.current?.showModal();
+      const previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => { document.body.style.overflow = previousOverflow; };
+    }
+  }, [expandedShot]);
+  const shot = (src: string, alt: string, eager = false) => {
+    const image = screenshots[src as keyof typeof screenshots];
+    return <button type="button" className="screenshot-button" onClick={() => setExpandedShot({ src, alt })} aria-label={`${alt} — ${u.zoom}`}>
+      <img src={image.src} alt={alt} width={image.width} height={image.height} loading={eager ? "eager" : "lazy"} fetchPriority={eager ? "high" : "auto"} decoding="async" />
+      <span className="zoom-hint"><ZoomIcon/><span>{u.zoom}</span></span>
+    </button>;
+  };
   return (
-    <main dir={rtl ? "rtl" : "ltr"} lang={t.locale}>
-      <header className="site-header"><a className="brand" href="#top" aria-label="ValueFinder"><img src="./valuefinder-logo.png" alt="" /><span>ValueFinder</span></a><div className="header-actions"><nav aria-label="Primary"><a href="#how">{t.nav[0]}</a><a href="#install">{t.nav[1]}</a><a className="nav-cta" href="#install">{t.nav[2]}</a></nav><label className="language-picker"><span className="sr-only">Language</span><select value={lang} onChange={(e)=>setLang(e.target.value as Lang)} aria-label="Language">{(Object.keys(languageLabels) as Lang[]).map(code=><option value={code} key={code}>{languageLabels[code]}</option>)}</select></label></div></header>
-      <section className="hero" id="top"><div className="hero-copy"><p className="eyebrow"><span /> {t.eyebrow}</p><h1>{t.headline[0]}<br />{t.headline[1]}<em>{t.headline[2]}</em></h1><p className="hero-description">{t.description}</p><div className="hero-actions"><a className="button button-primary" href="#install">{t.actions[0]} <span aria-hidden="true">→</span></a><a className="text-link" href="#demo">{t.actions[1]}</a></div><p className="microcopy">{t.micro}</p></div><div className="product-stage" aria-label="ValueFinder preview"><div className="browser-bar"><span/><span/><span/><p>finance.yahoo.com / AAPL</p></div><div className="finance-page" aria-hidden="true"><p className="tiny-label">APPLE INC.</p><div className="ticker-line"><b>AAPL</b><strong>226.34</strong><i>+1.28%</i></div><div className="chart-line"/></div><div className="finder-panel"><div className="panel-brand"><img src="./valuefinder-logo.png" alt=""/><b>ValueFinder</b></div><div className="demo-label">{t.searchQ}</div><div className="search-box"><span>{t.query}</span><kbd>↵</kbd></div><p className="result-kicker">{t.found}</p><h2>Statistics → Share Statistics</h2><p className="result-copy">{t.result}</p><div className="mock-button">{t.show}<span>→</span></div></div></div></section>
-      <section className="site-strip" aria-label={t.support}><p>{t.support}</p><ul>{siteNames.map(site=><li key={site}>{site}</li>)}</ul></section>
-      <section className="principle" id="how"><p className="section-number">01 / WAYFINDING</p><h2>{t.principleTitle[0]}<br/>{t.principleTitle[1]}</h2><p>{t.principleBody}</p></section>
-      <section className="route-flow" aria-label={t.nav[0]}>{t.routes.map((route,i)=><article key={route[0]}><span>0{i+1}</span><img className={`feature-shot${i === 2 ? " feature-shot-full" : ""}`} src={wayfindingShots[i]} alt={`${route[0]} — ValueFinder`} loading="lazy"/><h3>{route[0]}</h3><p>{route[1]}</p></article>)}</section>
-      <section className="proof"><div><strong>26</strong><span>{t.stats[0]}</span></div><div><strong>6</strong><span>{t.stats[1]}</span></div><div><strong>2</strong><span>{t.stats[2]}</span></div><p>{t.proof}</p></section>
-      <section className="install" id="install"><div className="install-intro"><p className="section-number">02 / INSTALLATION</p><h2>{t.installTitle[0]}<br/>{t.installTitle[1]}</h2><p>{t.installBody}</p><a className="store-link" href={storeUrl} target="_blank" rel="noreferrer"><span><small>{t.storeSmall}</small><strong>{t.storeStrong}</strong></span><b aria-hidden="true">↗</b></a><p className="brand-note">Chrome Web Store 공식 페이지로 이동합니다.</p></div><ol className="install-steps visual-steps">{t.installSteps.map((step,i)=><li key={step[0]}><b>0{i+1}</b><div><h3>{step[0]}</h3><p>{step[1]}</p><div className={`shot-row shot-row-${installShots[i].length}`}>{installShots[i].map((src,j)=><figure key={src}><img src={src} alt={`${step[0]} ${j+1}`} loading="lazy"/></figure>)}</div></div></li>)}</ol></section>
-      <section className="quick-guide" id="demo"><div className="guide-heading"><p className="section-number">03 / USAGE GUIDE</p><h2>{t.guideTitle[0]}<br/>{t.guideTitle[1]}</h2><p className="guide-lead">ValueFinder가 상황을 판단하고 안내하는 실제 화면을 순서대로 확인하세요.</p></div><div className="guide-timeline visual-guide">{t.guide.map((step,i)=><article key={step[0]}><div className="time">00:{String(i*15).padStart(2,"0")}</div><div><h3>{step[0]}</h3><p>{step[1]}</p><div className={`shot-row shot-row-${guideShots[i].length}`}>{guideShots[i].map((src,j)=><figure key={src}><img src={src} alt={`${step[0]} ${j+1}`} loading="lazy"/></figure>)}</div></div></article>)}</div></section>
-      <section className="privacy-note"><div><p className="section-number">PRIVACY BY DEFAULT</p><h2>{t.privacyTitle[0]}<br/>{t.privacyTitle[1]}</h2></div><p>{t.privacy}</p></section>
-      <footer><a className="brand footer-brand" href="#top"><img src="./valuefinder-logo.png" alt=""/><span>ValueFinder</span></a><p>{t.footer}</p><div><a href="mailto:kjyslt@gmail.com">{t.contact}</a><a href="./privacy-policy.html">{t.policy}</a></div><small>{t.disclaimer}</small></footer>
-    </main>
+    <div className="site-shell" dir={lang === "ar" ? "rtl" : "ltr"} lang={t.locale}>
+      <a className="skip-link" href="#main-content">{u.skip}</a>
+      <header className="site-header">
+        <a className="brand" href="#top" aria-label="ValueFinder"><img src="./valuefinder-mark.webp" width="36" height="36" alt=""/><span>ValueFinder</span></a>
+        <div className="header-actions">
+          <nav aria-label={ko ? "주요 메뉴" : "Primary navigation"}><a href="#how">{t.nav[0]}</a><a href="#install">{t.nav[1]}</a><a className="nav-cta" href={storeUrl} target="_blank" rel="noreferrer">{t.nav[2]}<Arrow diagonal/></a></nav>
+          <label className="language-picker"><span className="sr-only">Language</span><select value={lang} onChange={(e) => { dialog.current?.close(); setLang(e.target.value as Lang); }} aria-label="Language">{(Object.keys(languageLabels) as Lang[]).map(code => <option value={code} key={code}>{languageLabels[code]}</option>)}</select></label>
+        </div>
+      </header>
+      <main id="main-content">
+        <section className="hero container" id="top">
+          <div className="hero-copy">
+            <h1>{t.headline[0]}<br/>{t.headline[1]}<em>{t.headline[2]}</em></h1>
+            <p className="hero-description">{t.description}</p>
+            <div className="hero-actions"><a className="button button-primary" href={storeUrl} target="_blank" rel="noreferrer">{t.storeStrong}<Arrow diagonal/></a><a className="text-link" href="#demo">{t.actions[1]}<Arrow/></a></div>
+            <p className="microcopy">{t.micro}</p>
+            <p className="platform-note">{ko ? "데스크톱 Chrome에서 이용할 수 있습니다." : "Available on desktop Chrome."}</p>
+          </div>
+          <figure className="hero-product">
+            <div className="product-heading"><span>Yahoo Finance</span><span>{u.screen}</span></div>
+            <div className="hero-product-body">
+              <div className="route-caption"><span>{ko ? "찾고 싶은 정보" : "Looking for"}</span><strong>{ko ? "배당" : "Dividend"}</strong><svg width="26" height="70" viewBox="0 0 26 70" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M13 0v65m-5-6 5 6 5-6"/></svg><span>{ko ? "확인할 위치" : "Find it in"}</span><p>Statistics<br/><b>Dividends &amp; Splits</b></p></div>
+              {shot(guideShots[1][0], ko ? "Yahoo Finance에서 배당을 검색하고 Statistics의 Dividends & Splits 위치를 안내받는 실제 화면" : "Dividend search in Yahoo Finance: Statistics, Dividends & Splits", true)}
+            </div>
+            <figcaption><span className="status-dot"/>{ko ? "보고 있는 사이트에서, 다음 행동까지 안내합니다." : "From the page you are on to the information you need."}</figcaption>
+          </figure>
+        </section>
+        <section className="site-strip container" aria-label={t.support}><p>{t.support}</p><ul>{siteNames.map((site, i) => <li key={site}>{ko && i === 1 ? "네이버페이 증권" : site}</li>)}</ul></section>
+        <section className="principle container" id="how"><div><h2>{t.principleTitle[0]}<br/>{t.principleTitle[1]}</h2></div><p>{t.principleBody}</p></section>
+        <section className="route-flow container" aria-label={t.nav[0]}>{t.routes.map((route,i) => <article key={route[0]}><div className="route-copy"><span className="route-symbol" aria-hidden="true">{i === 0 ? <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="16" cy="16" r="9"/><circle cx="16" cy="16" r="3"/><path d="M16 1v6m0 18v6M1 16h6m18 0h6"/></svg> : i === 1 ? <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 4v20h23m-7-7 7 7-7 7"/></svg> : <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 27 27 4M10 4h17v17M4 15v12h12"/></svg>}</span><h3>{route[0]}</h3><p>{route[1]}</p><span className="route-action">{["Highlight here", "Go there and highlight", "Find it on another site"][i]}</span></div><figure>{shot(wayfindingShots[i], `${route[0]} — ${["P/E · Statistics → Valuation Measures", "Peer Comparison · Summary → Compare", "Short Interest · Investing.com → Yahoo Finance / Finviz / StockAnalysis"][i]}`)}<figcaption>{u.screen} · {['P/E', 'Peer Comparison', 'Short Interest'][i]}</figcaption></figure></article>)}</section>
+        <section className="proof container"><dl><div><dt>{t.stats[0]}</dt><dd>26</dd></div><div><dt>{t.stats[1]}</dt><dd>6</dd></div><div><dt>{t.stats[2]}</dt><dd>2</dd></div></dl><p>{t.proof}</p></section>
+        <section className="install container" id="install"><div className="install-intro"><h2>{t.installTitle[0]}<br/>{t.installTitle[1]}</h2><p>{t.installBody}</p><a className="button button-primary" href={storeUrl} target="_blank" rel="noreferrer">{t.storeStrong}<Arrow diagonal/></a><p className="platform-note">{ko ? "데스크톱 Chrome · 공식 웹스토어로 이동" : "Desktop Chrome · Official Chrome Web Store"}</p></div><ol className="install-steps">{t.installSteps.map((step,i) => <li key={step[0]}><span className="step-number">{i+1}</span><div><h3>{step[0]}</h3><p>{step[1]}</p><div className={`shot-row install-shots-${i}`}>{installShots[i].map((src,j) => <figure key={src}>{shot(src, `${step[0]} — ${i === 0 ? (j === 0 ? 'Chrome menu: Visit Chrome Web Store' : 'ValueFinder search results') : i === 1 ? 'Chrome Web Store: Add to Chrome' : 'Chrome extensions: Pin ValueFinder'}`)}<figcaption>{i === 0 ? (j === 0 ? (ko ? '웹스토어 열기' : 'Open the Web Store') : (ko ? 'ValueFinder 검색' : 'Search ValueFinder')) : i === 1 ? 'Chrome Web Store' : 'ValueFinder · Chrome'}</figcaption></figure>)}</div></div></li>)}</ol></section>
+        <section className="quick-guide" id="demo"><div className="container"><div className="guide-heading"><h2>{t.guideTitle[0]}<br/>{t.guideTitle[1]}</h2><p>{ko ? "종목 페이지를 연 뒤, 찾을 정보를 입력하세요. 화면에 표시되는 다음 행동을 확인하고 실행하면 됩니다." : "Open a stock page, enter a financial term, then check and run the suggested action."}</p></div><ol className="guide-summary">{t.guide.map((step,i) => <li key={step[0]}><span className="step-number">{i+1}</span><h3>{step[0]}</h3><p>{step[1]}</p></li>)}</ol><div className="usage-examples"><figure>{shot(guideShots[3][0], ko ? "Yahoo Finance에서 P/E 검색 후 Statistics → Valuation Measures로 이동하는 화면" : "P/E search on Yahoo Finance: Go to Statistics, Valuation Measures")}<figcaption><strong>{t.routes[1][0]}</strong><span>P/E · Yahoo Finance</span></figcaption></figure><figure>{shot(guideShots[2][0], ko ? "Finviz에서 제공하지 않는 Peer Comparison을 Yahoo Finance 또는 Seeking Alpha에서 찾도록 안내하는 화면" : "Peer Comparison is unavailable on Finviz: alternatives on Yahoo Finance and Seeking Alpha")}<figcaption><strong>{t.routes[2][0]}</strong><span>Peer Comparison · Finviz</span></figcaption></figure><div className="keyboard-note"><span className="keyboard-keys"><kbd>Shift</kbd><span>+</span><kbd>Enter</kbd></span><h3>{ko ? "다음 행동은, 키보드로도." : "Your next action. One shortcut."}</h3><p>{t.guide[3][1]}</p><a className="text-link" href="#top">{ko ? "현재 화면에서 찾는 예시 보기" : "See the on-page example"}<Arrow/></a></div></div><details className="troubleshooting"><summary>{ko ? "‘지원하지 않는 페이지’라고 표시되나요?" : 'Seeing “Not supported”?'}<span className="plus" aria-hidden="true"/></summary><div className="troubleshooting-content"><p>{ko ? "Google 같은 지원 대상이 아닌 사이트에서는 동작하지 않습니다. 지원 사이트의 첫 화면에서도 개별 종목을 먼저 열어야 합니다. 아래 두 화면은 설치 오류가 아니라, 검색을 시작할 위치를 안내하는 상태입니다." : "Use a supported financial website and open an individual stock page first. These screens explain where to start; they do not mean installation failed."}</p><div className="trouble-shots">{guideShots[0].map((src,i) => <figure key={src}>{shot(src, i === 0 ? (ko ? "Google에서 표시되는 지원하지 않는 사이트 안내" : "Unsupported website: Google") : (ko ? "Finviz 첫 화면에서 개별 종목 페이지를 열라는 안내" : "Finviz: open an individual stock page"))}<figcaption>{i === 0 ? (ko ? "지원 금융 사이트로 이동하세요." : "Visit a supported financial website.") : (ko ? "개별 종목 페이지를 먼저 여세요." : "Open an individual stock page.")}</figcaption></figure>)}</div></div></details></div></section>
+        <section className="privacy-note container"><div className="privacy-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="m24 4 16 6v13c0 10-16 21-16 21S8 33 8 23V10Z"/><path d="m17 23 5 5 10-11"/></svg></div><div><h2>{t.privacyTitle[0]}<br/>{t.privacyTitle[1]}</h2><p>{t.privacy}</p><a className="text-link" href="./privacy-policy.html">{t.policy}<Arrow/></a></div></section>
+      </main>
+      <footer className="container"><div className="footer-main"><a className="brand" href="#top"><img src="./valuefinder-mark.webp" width="36" height="36" alt=""/><span>ValueFinder</span></a><p>{t.footer}</p><div><a href="mailto:kjyslt@gmail.com">{t.contact}</a><a href="./privacy-policy.html">{t.policy}</a></div></div><p className="disclaimer">{t.disclaimer}</p></footer>
+      <dialog ref={dialog} className="image-dialog" aria-labelledby="image-dialog-title" onClose={() => setExpandedShot(null)}>
+        <div className="dialog-toolbar"><p id="image-dialog-title">{u.screen}</p><button type="button" onClick={() => dialog.current?.close()}>{u.close}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+        {expandedShot && <figure><img src={expandedShot.src} alt={expandedShot.alt}/><figcaption>{expandedShot.alt}</figcaption></figure>}
+      </dialog>
+    </div>
   );
 }

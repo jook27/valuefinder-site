@@ -39,3 +39,7 @@ yarn-error.log*
 /.wrangler/
 /outputs/
 /work/
+
+# Local macOS filesystem metadata and TypeScript cache
+._*
+*.tsbuildinfo
