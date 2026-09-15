@@ -87,7 +87,7 @@ function ZoomIcon() {
 }
 
 export default function Home() {
-  const [lang, setLang] = useState<Lang>("ko");
+  const [lang, setLang] = useState<Lang>("en");
   const [expandedShot, setExpandedShot] = useState<Shot | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const t = content[lang];
